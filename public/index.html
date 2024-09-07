@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Web Socket</h1>
+
+  <button onclick="createConnection()">Establish Connection</button>
+
+  <input type="text" placeholder="Enter your message" id="message">
+  <button id="Send">Send</button>
+
+  <div id="allmessages"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    function createConnection(){
+      const socket = io();
+
+      const usermessage = document.getElementById('message')
+      const sendbtn = document.getElementById('Send')
+      const allmessages = document.getElementById('allmessages')
+
+      socket.on('message', (message) => {
+        const p = document.createElement("p");
+        p.innerText=message;
+        allmessages.appendChild(p)
+      })
+
+      sendbtn.addEventListener("click",(e)=>{
+        const message = usermessage.value;
+        console.log(message)
+        socket.emit('user-message',message)
+      })
+    }
+  </script>
+</body>
+</html>
